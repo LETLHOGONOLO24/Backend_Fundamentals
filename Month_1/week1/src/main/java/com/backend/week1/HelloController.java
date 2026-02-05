@@ -9,6 +9,7 @@ public class HelloController {
     @GetMapping("/hello")
     public String hello() throws InterruptedException {
         Thread.sleep(3000);
-        return "Backend is alive";
+        return "Completed";
     }
+    // http://localhost:8080/hello
 }
