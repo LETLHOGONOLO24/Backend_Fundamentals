@@ -1,25 +1,28 @@
 package com.backend.week1;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Value;
 
 @RestController
 public class HelloController {
 
-    @Value("${server.port}")
-    private String port;
+    private final UserRepository userRepository;
 
-    @GetMapping("/hello")
-    public String hello() throws InterruptedException {
-        Thread.sleep(3000);
-        return "Hello from port " + port;
+    public HelloController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
-    // http://localhost:8081/hello
 
-    @GetMapping("/fast")
-    public String fast() {
-        return "Fast response from port " + port;
+    @GetMapping("/users")
+    public String createUser(@RequestParam String name) {
+        User user = new User(name);
+        userRepository.save(user);
+        return "Saved user with id " + user.getId();
+    }
+
+    @GetMapping("/count")
+    public long countUsers() {
+        return userRepository.count();
     }
 
 }
